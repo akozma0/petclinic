@@ -1,0 +1,13 @@
+config:
+  target: "http://petclinic:8080"
+  phases:
+    - duration: 600 # 10min 
+      arrivalRate: 2 # 2 users
+scenarios:
+  - flow:
+    - get:
+        url: "/"
+    - get:
+        url: "/vets.html"
+    - get:
+        url: "/owners/find"

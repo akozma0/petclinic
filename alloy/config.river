@@ -1,0 +1,47 @@
+// OTLP data from PetClinic Java Agent
+otelcol.receiver.otlp "default" {
+  http { 
+    endpoint = "0.0.0.0:4318" 
+  }
+  grpc { 
+    endpoint = "0.0.0.0:4317" 
+  }
+
+  output {
+    metrics = [otelcol.exporter.prometheus.to_mimir.input]
+    logs    = [otelcol.exporter.loki.to_loki.input]
+    traces  = [otelcol.exporter.otlp.to_tempo.input]
+  }
+}
+
+// Metrics to Mimir
+otelcol.exporter.prometheus "to_mimir" {
+  forward_to = [prometheus.remote_write.mimir.receiver]
+}
+
+prometheus.remote_write "mimir" {
+  endpoint { 
+    url = "http://mimir:9009/api/v1/push" 
+  }
+}
+
+// Logs to Loki
+otelcol.exporter.loki "to_loki" {
+  forward_to = [loki.write.local.receiver]
+}
+
+loki.write "local" {
+  endpoint { 
+    url = "http://loki:3100/loki/api/v1/push" 
+  }
+}
+
+// Traces to Tempo
+otelcol.exporter.otlp "to_tempo" {
+  client {
+    endpoint = "tempo:4317"
+    tls { 
+      insecure = true 
+    }
+  }
+}
