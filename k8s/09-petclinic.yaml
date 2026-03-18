@@ -1,0 +1,40 @@
+#Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic
+  namespace: observability
+spec:
+  selector:
+    app: petclinic
+  ports:
+    - port: 8080
+      targetPort: 8080
+
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinic
+  namespace: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petclinic
+  template:
+    metadata:
+      labels:
+        app: petclinic
+    spec:
+      containers:
+        - name: petclinic
+          image: local-petclinic:latest
+          imagePullPolicy: Never #K8s pulls Docker build
+          ports:
+            - containerPort: 8080
+          env:
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://alloy:4318"
+            - name: OTEL_SERVICE_NAME
+              value: "petclinic"

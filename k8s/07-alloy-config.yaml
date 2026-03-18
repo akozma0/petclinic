@@ -1,0 +1,17 @@
+apiVersion: v1
+data:
+  config.river: "// OTLP data from PetClinic Java Agent\notelcol.receiver.otlp \"default\"
+    {\n  http { \n    endpoint = \"0.0.0.0:4318\" \n  }\n  grpc { \n    endpoint =
+    \"0.0.0.0:4317\" \n  }\n\n  output {\n    metrics = [otelcol.exporter.prometheus.to_mimir.input]\n
+    \   logs    = [otelcol.exporter.loki.to_loki.input]\n    traces  = [otelcol.exporter.otlp.to_tempo.input]\n
+    \ }\n}\n\n// Metrics to Mimir\notelcol.exporter.prometheus \"to_mimir\" {\n  forward_to
+    = [prometheus.remote_write.mimir.receiver]\n}\n\nprometheus.remote_write \"mimir\"
+    {\n  endpoint { \n    url = \"http://mimir:9009/api/v1/push\" \n  }\n}\n\n// Logs
+    to Loki\notelcol.exporter.loki \"to_loki\" {\n  forward_to = [loki.write.local.receiver]\n}\n\nloki.write
+    \"local\" {\n  endpoint { \n    url = \"http://loki:3100/loki/api/v1/push\" \n
+    \ }\n}\n\n// Traces to Tempo\notelcol.exporter.otlp \"to_tempo\" {\n  client {\n
+    \   endpoint = \"tempo:4317\"\n    tls { \n      insecure = true \n    }\n  }\n}\n"
+kind: ConfigMap
+metadata:
+  name: alloy-config
+  namespace: observability

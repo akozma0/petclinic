@@ -1,0 +1,28 @@
+apiVersion: v1
+data:
+  datasources.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Mimir
+        type: prometheus
+        uid: mimir
+        url: http://mimir:9009/prometheus
+        access: proxy
+        isDefault: true
+
+      - name: Tempo
+        type: tempo
+        uid: tempo
+        url: http://tempo:3200
+        access: proxy
+
+      - name: Loki
+        type: loki
+        uid: loki
+        url: http://loki:3100
+        access: proxy
+        editable: true
+kind: ConfigMap
+metadata:
+  name: grafana-datasources
+  namespace: observability

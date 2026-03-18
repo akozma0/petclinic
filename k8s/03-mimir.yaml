@@ -1,0 +1,72 @@
+# ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mimir-config
+  namespace: observability
+data:
+  mimir.yaml: |
+    target: all
+    server:
+      http_listen_port: 9009
+    multitenancy_enabled: false
+    blocks_storage:
+      backend: filesystem
+      bucket_store:
+        sync_dir: /tmp/mimir/tsdb-sync
+      filesystem:
+        dir: /tmp/mimir/data
+    compactor:
+      data_dir: /tmp/mimir/compactor
+    ingester:
+      ring:
+        replication_factor: 1
+    store_gateway:
+      sharding_ring:
+        replication_factor: 1
+
+#Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mimir
+  namespace: observability
+spec:
+  selector:
+    app: mimir
+  ports:
+    - name: http
+      protocol: TCP
+      port: 9009
+      targetPort: 9009
+
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mimir
+  namespace: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mimir
+  template:
+    metadata:
+      labels:
+        app: mimir
+    spec:
+      containers:
+        - name: mimir
+          image: grafana/mimir:2.11.0
+          args:
+            - "-config.file=/etc/mimir/mimir.yaml"
+          ports:
+            - containerPort: 9009
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/mimir
+      volumes:
+        - name: config-volume
+          configMap:
+            name: mimir-config

@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  load-test.yml: "config:\n  target: \"http://petclinic:8080\"\n  phases:\n    - duration:
+    600 # 10min \n      arrivalRate: 2 # 2 users\nscenarios:\n  - flow:\n    - get:\n
+    \       url: \"/\"\n    - get:\n        url: \"/vets.html\"\n    - get:\n        url:
+    \"/owners/find\"\n"
+kind: ConfigMap
+metadata:
+  name: artillery-config
+  namespace: observability
