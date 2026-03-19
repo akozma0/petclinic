@@ -10,7 +10,7 @@ spec:
   ports:
     - port: 8080
       targetPort: 8080
-
+---
 #Deployment
 apiVersion: apps/v1
 kind: Deployment

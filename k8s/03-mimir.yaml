@@ -24,7 +24,7 @@ data:
     store_gateway:
       sharding_ring:
         replication_factor: 1
-
+---
 #Service
 apiVersion: v1
 kind: Service
@@ -39,7 +39,7 @@ spec:
       protocol: TCP
       port: 9009
       targetPort: 9009
-
+---
 #Deployment
 apiVersion: apps/v1
 kind: Deployment

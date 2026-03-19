@@ -32,7 +32,7 @@ data:
           path: /tmp/tempo/wal
         local:
           path: /tmp/tempo/blocks
-
+---
 #Service
 apiVersion: v1
 kind: Service
@@ -51,7 +51,7 @@ spec:
       protocol: TCP
       port: 4317
       targetPort: 4317
-
+---
 #Deployment
 apiVersion: apps/v1
 kind: Deployment
