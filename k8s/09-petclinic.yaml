@@ -27,10 +27,12 @@ spec:
       labels:
         app: petclinic
     spec:
+      imagePullSecrets:
+        - name: regcred
       containers:
         - name: petclinic
-          image: local-petclinic:latest
-          imagePullPolicy: Never #K8s pulls Docker build
+          image: akozma056/petclinic-app:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
