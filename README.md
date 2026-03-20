@@ -65,7 +65,7 @@ The telemetry is split and stored in three specialized backends:
 
 ![Service Graph](./screenshots/servicegraph.png)
 
-*Service graph under load*
+<center>*1. Service graph under load*</center>
 
 ### 4. Grafana (Visualization)
 Grafana is the central UI of the stack. Data sources and dashboards are provisioned via K8s ConfigMaps.
@@ -73,11 +73,11 @@ Grafana is the central UI of the stack. Data sources and dashboards are provisio
 
 ![JVM](./screenshots/jvm.png)
 
-*K8s pod scaling under load*
+<center>*2. JVM Metrics spiking under load*</center>
 
-![K8S](./screenshots/pod.png)
+![K8S](./screenshots/pods.png)
 
-*JVM Metrics spiking under load*
+<center>*3. K8s pod scaling under load*</center>
 
 ---
 
