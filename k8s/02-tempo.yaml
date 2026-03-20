@@ -46,7 +46,7 @@ data:
             headers:
               X-Scope-OrgID: "anonymous"
     overrides:
-      metrics_generator_processors: [service-graphs, span-metrics]
+      metrics_generator_processors: [service-graphs, span-metrics, local-blocks]
 ---
 #Service
 apiVersion: v1
