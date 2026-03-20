@@ -40,7 +40,7 @@ spec:
               cpu: "100m"
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://alloy:4317"
+              value: "http://alloy:4318"
             - name: OTEL_SERVICE_NAME
               value: "petclinic"
             - name: OTEL_METRICS_EXPORTER
