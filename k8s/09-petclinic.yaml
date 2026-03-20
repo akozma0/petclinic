@@ -35,8 +35,36 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              cpu: "100m"
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: "http://alloy:4318"
+              value: "http://alloy:4317"
             - name: OTEL_SERVICE_NAME
               value: "petclinic"
+            - name: OTEL_METRICS_EXPORTER
+              value: "otlp"
+            - name: OTEL_LOGS_EXPORTER
+              value: "none"
+---
+#HPA
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: petclinic-hpa
+  namespace: observability
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: petclinic
+  minReplicas: 1
+  maxReplicas: 9
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 10

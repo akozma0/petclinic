@@ -1,5 +1,5 @@
 config:
-  target: "http://petclinic:8080"
+  target: "http://petclinic.localhost"
   phases:
     - duration: 600 # 10min 
       arrivalRate: 2 # 2 users

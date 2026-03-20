@@ -45,3 +45,23 @@ otelcol.exporter.otlp "to_tempo" {
     }
   }
 }
+
+// Alloy to push to Mimir
+prometheus.remote_write "mimir_direct" {
+  endpoint {
+    url = "http://mimir:9009/api/v1/push"
+  }
+  external_labels = {
+    cluster = "local-dev",
+  }
+}
+
+// Alloy to scrape kube-state-metrics
+prometheus.scrape "kube_state_metrics" {
+  job_name = "kube-state-metrics"
+  targets = [
+    {"__address__" = "kube-state-metrics.kube-system.svc.cluster.local:8080"},
+  ]
+  forward_to = [prometheus.remote_write.mimir_direct.receiver]
+  scrape_interval = "15s"
+}

@@ -15,6 +15,11 @@ data:
         uid: tempo
         url: http://tempo:3200
         access: proxy
+        jsonData:
+          nodeGraph:
+            enabled: true
+          serviceMap:
+            datasourceUid: 'mimir'
 
       - name: Loki
         type: loki

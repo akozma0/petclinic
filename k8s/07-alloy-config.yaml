@@ -10,7 +10,14 @@ data:
     to Loki\notelcol.exporter.loki \"to_loki\" {\n  forward_to = [loki.write.local.receiver]\n}\n\nloki.write
     \"local\" {\n  endpoint { \n    url = \"http://loki:3100/loki/api/v1/push\" \n
     \ }\n}\n\n// Traces to Tempo\notelcol.exporter.otlp \"to_tempo\" {\n  client {\n
-    \   endpoint = \"tempo:4317\"\n    tls { \n      insecure = true \n    }\n  }\n}\n"
+    \   endpoint = \"tempo:4317\"\n    tls { \n      insecure = true \n    }\n  }\n}\n\n//
+    Alloy to push to Mimir\nprometheus.remote_write \"mimir_direct\" {\n  endpoint
+    {\n    url = \"http://mimir:9009/api/v1/push\"\n  }\n  external_labels = {\n    cluster
+    = \"local-dev\",\n  }\n}\n\n// Alloy to scrape kube-state-metrics\nprometheus.scrape
+    \"kube_state_metrics\" {\n  job_name = \"kube-state-metrics\"\n  targets = [\n
+    \   {\"__address__\" = \"kube-state-metrics.kube-system.svc.cluster.local:8080\"},\n
+    \ ]\n  forward_to = [prometheus.remote_write.mimir_direct.receiver]\n  scrape_interval
+    = \"15s\"\n}\n"
 kind: ConfigMap
 metadata:
   name: alloy-config
