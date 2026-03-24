@@ -46,7 +46,7 @@ data:
             headers:
               X-Scope-OrgID: "anonymous"
     overrides:
-      metrics_generator_processors: [service-graphs, span-metrics, local-blocks]
+      metrics_generator_processors: [service-graphs, span-metrics]
 ---
 #Service
 apiVersion: v1
@@ -83,6 +83,7 @@ spec:
       labels:
         app: tempo
     spec:
+      terminationGracePeriodSeconds: 60
       containers:
         - name: tempo
           image: grafana/tempo:2.10.1

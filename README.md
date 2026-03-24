@@ -2,7 +2,7 @@
 
 This project implements the Grafana LGTM stack (Loki, Grafana, Tempo, Mimir) using OpenTelemetry for transparent telemetry collection for the PetClinic Spring Boot application running on Kubernetes.
 
-## 🏗️ Folder Structure
+## 📁 Folder Structure
 
 ```bash
 .
@@ -109,7 +109,7 @@ kubectl apply -f k8s/
 ### 4. Generate Traffic
 Using the artillery configuration generate load on the app:
 ```bash
-docker run --rm --add-host petclinic.localhost:host-gateway -v ${PWD}:/scripts artilleryio/artillery:latest run /scripts/load-test.yml
+docker run --rm --add-host petclinic.localhost:host-gateway -v ${PWD}:/scripts artilleryio/artillery:latest run /scripts/traffic/load-test.yml
 ```
 ### 5. Access the Stack
 * **Grafana:** http://grafana.localhost
